@@ -159,6 +159,7 @@
                                                XLFormRowDescriptorTypeNumber: [XLFormTextFieldCell class],
                                                XLFormRowDescriptorTypeInteger: [XLFormTextFieldCell class],
                                                XLFormRowDescriptorTypeDecimal: [XLFormTextFieldCell class],
+                                               XLFormRowDescriptorTypeCurrency: [XLFormRowDescriptorTypeCurrency class],
                                                XLFormRowDescriptorTypeSelectorPush: [XLFormSelectorCell class],
 											   XLFormRowDescriptorTypeSelectorPopover: [XLFormSelectorCell class],
                                                XLFormRowDescriptorTypeSelectorActionSheet: [XLFormSelectorCell class],

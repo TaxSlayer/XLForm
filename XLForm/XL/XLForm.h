@@ -78,6 +78,7 @@ extern NSString *const XLFormRowDescriptorTypeTwitter;
 extern NSString *const XLFormRowDescriptorTypeAccount;
 extern NSString *const XLFormRowDescriptorTypeInteger;
 extern NSString *const XLFormRowDescriptorTypeDecimal;
+extern NSString *const XLFormRowDescriptorTypeCurrency;
 extern NSString *const XLFormRowDescriptorTypeTextView;
 extern NSString *const XLFormRowDescriptorTypeSelectorPush;
 extern NSString *const XLFormRowDescriptorTypeSelectorPopover;
