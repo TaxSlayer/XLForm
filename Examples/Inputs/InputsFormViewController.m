@@ -86,7 +86,7 @@ NSString *const kNotes = @"notes";
     [section addFormRow:row];
 
     // Currency
-    row = [XLFormRowDescriptor formRowDescriptorWithTag:kCurrency rowType:XLFormRowDescriptorTypeDecimal title:@"Currency"];
+    row = [XLFormRowDescriptor formRowDescriptorWithTag:kCurrency rowType:XLFormRowDescriptorTypeCurrency title:@"Currency"];
     [section addFormRow:row];
 
     // Password
