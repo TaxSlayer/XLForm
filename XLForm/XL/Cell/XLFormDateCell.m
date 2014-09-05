@@ -27,11 +27,13 @@
 #import "XLForm.h"
 #import "XLFormRowDescriptor.h"
 #import "XLFormDateCell.h"
+#import "UIView+XLFormAdditions.h"
 
 
 @interface XLFormDateCell()
 
 @property (nonatomic) UIDatePicker *datePicker;
+@property NSArray * dynamicCustomConstraints;
 
 @end
 
@@ -40,6 +42,22 @@
     UIColor * _beforeChangeColor;
 }
 
+@synthesize detailTextLabel = _detailTextLabel;
+@synthesize textLabel = _textLabel;
+
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.numberOfLines = 0;
+        self.textLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        self.detailTextLabel.text = @"";
+    }
+    
+    return self;
+}
 
 - (UIView *)inputView
 {
@@ -79,6 +97,10 @@
 {
     [super configure];
     self.formDatePickerMode = XLFormDateDatePickerModeGetFromRowDescriptor;
+    [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [self.contentView addSubview:self.textLabel];
+    [self.contentView addSubview:self.detailTextLabel];
+    [self.contentView addConstraints:[self layoutConstraints]];
 }
 
 -(void)update
@@ -217,5 +239,81 @@
         }
     }
 }
+
+#pragma mark - Properties
+
+-(UILabel *)textLabel
+{
+    if (_textLabel) return _textLabel;
+    _textLabel = [UILabel autolayoutView];
+    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    return _textLabel;
+}
+
+-(UILabel *)detailTextLabel
+{
+    if (_detailTextLabel) return _detailTextLabel;
+    _detailTextLabel = [UILabel autolayoutView];
+    [_detailTextLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    [_detailTextLabel setTextAlignment:NSTextAlignmentRight];
+    return _detailTextLabel;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.contentView setNeedsLayout];
+    [self.contentView layoutIfNeeded];
+    
+    if ( self.textLabel.numberOfLines == 0 )
+    {
+        if ( self.textLabel.preferredMaxLayoutWidth != self.frame.size.width )
+        {
+            self.textLabel.preferredMaxLayoutWidth = self.frame.size.width;
+            [self setNeedsUpdateConstraints];
+        }
+    }
+}
+
+#pragma mark - LayoutConstraints
+
+-(NSArray *)layoutConstraints
+{
+    NSMutableArray * result = [[NSMutableArray alloc] init];
+    [self.textLabel setContentHuggingPriority:500 forAxis:UILayoutConstraintAxisHorizontal];
+    
+    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_textLabel(<=200)]-[_detailTextLabel]" options:NSLayoutFormatAlignAllBaseline metrics:0 views:NSDictionaryOfVariableBindings(_textLabel, _detailTextLabel)]];
+    
+    NSArray *verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-8-[_textLabel]-8-|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:NSDictionaryOfVariableBindings(_textLabel)];
+    [result addObjectsFromArray:verticalConstraint];
+    
+    return result;
+}
+
+-(void)updateConstraints
+{
+    if (self.dynamicCustomConstraints){
+        [self.contentView removeConstraints:self.dynamicCustomConstraints];
+    }
+    NSDictionary * views = @{@"label": self.textLabel, @"detailLabel": self.detailTextLabel, @"image": self.imageView};
+    if (self.imageView.image){
+        if (self.textLabel.text.length > 0){
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[label(<=200)]-[detailLabel]-10-|" options:0 metrics:0 views:views];
+        }
+        else{
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[detailLabel]-10-|" options:0 metrics:0 views:views];
+        }
+    }
+    else{
+        if (self.textLabel.text.length > 0){
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[label(<=200)]-[detailLabel]-10-|" options:0 metrics:0 views:views];
+        }
+        else{
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[detailLabel]-10-|" options:0 metrics:0 views:views];
+        }
+    }
+    [self.contentView addConstraints:self.dynamicCustomConstraints];
+    [super updateConstraints];
+}
+
 
 @end

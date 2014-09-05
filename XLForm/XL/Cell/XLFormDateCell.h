@@ -40,4 +40,7 @@ typedef NS_ENUM(NSUInteger, XLFormDateDatePickerMode) {
 @property (nonatomic) NSDate *maximumDate;
 @property (nonatomic) NSInteger minuteInterval;
 
+@property (nonatomic, readonly) UILabel * textLabel;
+@property (nonatomic, readonly) UILabel * detailTextLabel;
+
 @end
