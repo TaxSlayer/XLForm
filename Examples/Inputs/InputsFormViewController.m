@@ -33,6 +33,7 @@ NSString *const kTwitter = @"twitter";
 NSString *const kNumber = @"number";
 NSString *const kInteger = @"integer";
 NSString *const kDecimal = @"decimal";
+NSString *const kCurrency = @"currency";
 NSString *const kPassword = @"password";
 NSString *const kPhone = @"phone";
 NSString *const kUrl = @"url";
@@ -83,7 +84,11 @@ NSString *const kNotes = @"notes";
     // Decimal
     row = [XLFormRowDescriptor formRowDescriptorWithTag:kDecimal rowType:XLFormRowDescriptorTypeDecimal title:@"Decimal"];
     [section addFormRow:row];
-    
+
+    // Currency
+    row = [XLFormRowDescriptor formRowDescriptorWithTag:kCurrency rowType:XLFormRowDescriptorTypeDecimal title:@"Currency"];
+    [section addFormRow:row];
+
     // Password
     row = [XLFormRowDescriptor formRowDescriptorWithTag:kPassword rowType:XLFormRowDescriptorTypePassword title:@"Password"];
     [section addFormRow:row];
