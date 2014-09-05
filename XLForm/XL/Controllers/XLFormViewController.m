@@ -198,14 +198,14 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _inlineRowDescriptorTypesForRowDescriptorTypes = [
-  @{XLFormRowDescriptorTypeSelectorPickerViewInline: XLFormRowDescriptorTypePicker,
-    XLFormRowDescriptorTypeDateInline: XLFormRowDescriptorTypeDatePicker,
-    XLFormRowDescriptorTypeDateTimeInline: XLFormRowDescriptorTypeDatePicker,
-    XLFormRowDescriptorTypeTimeInline: XLFormRowDescriptorTypeDatePicker
+                                                          @{XLFormRowDescriptorTypeSelectorPickerViewInline: XLFormRowDescriptorTypePicker,
+                                                            XLFormRowDescriptorTypeDateInline: XLFormRowDescriptorTypeDatePicker,
+                                                            XLFormRowDescriptorTypeDateTimeInline: XLFormRowDescriptorTypeDatePicker,
+                                                            XLFormRowDescriptorTypeTimeInline: XLFormRowDescriptorTypeDatePicker
                                                             } mutableCopy];
     });
     return _inlineRowDescriptorTypesForRowDescriptorTypes;
-
+    
 }
 
 #pragma mark - XLFormDescriptorDelegate
@@ -350,6 +350,9 @@
     XLFormRowDescriptor * rowDescriptor = [self.form formRowAtIndex:indexPath];
     UITableViewCell<XLFormDescriptorCell> * formDescriptorCell = [rowDescriptor cellForFormController:self];
     
+    formDescriptorCell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    formDescriptorCell.textLabel.numberOfLines = 0;
+    
     ((UITableViewCell<XLFormDescriptorCell> *)formDescriptorCell).rowDescriptor = rowDescriptor;
     [rowDescriptor.cellConfig enumerateKeysAndObjectsUsingBlock:^(NSString *keyPath, id value, BOOL * __unused stop) {
         [formDescriptorCell setValue:value forKeyPath:keyPath];
@@ -403,8 +406,29 @@
 {
     XLFormRowDescriptor *rowDescriptor = [self.form formRowAtIndex:indexPath];
     Class cellClass = rowDescriptor.cellClass ?: [XLFormViewController cellClassesForRowDescriptorTypes][rowDescriptor.rowType];
+    NSLog(@"text: %@", rowDescriptor.title);
+    NSLog(@"class: %@", NSStringFromClass(cellClass) );
+    
     if ([cellClass respondsToSelector:@selector(formDescriptorCellHeightForRowDescriptor:)]){
-        return [cellClass formDescriptorCellHeightForRowDescriptor:rowDescriptor];
+        
+        UITableViewCell<XLFormDescriptorCell> * cell = (UITableViewCell<XLFormDescriptorCell> *)[rowDescriptor cellForFormController:self];
+        cell.textLabel.text = rowDescriptor.title;
+        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        
+        [cell layoutSubviews];
+        CGSize s = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        NSLog(@"fitting size: %@", NSStringFromCGSize(s));
+        
+        return s.height + 1;
+        
+        //        [cell setNeedsLayout];
+        //        [cell layoutIfNeeded];
+        //
+        //        CGSize s = [cell.textLabel.layer.frame systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        //        NSLog(@"fitting size: %@", NSStringFromCGSize(s));
+        //
+        //        return s.height + 1;
+        
     }
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")){
         return -1;

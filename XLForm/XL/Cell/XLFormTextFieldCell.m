@@ -59,6 +59,18 @@
 
 #pragma mark - XLFormDescriptorCell
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {        
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.numberOfLines = 0;
+        self.textLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    
+    return self;
+}
+
 -(void)configure
 {
     [super configure];
@@ -134,7 +146,7 @@
     [self.textField setEnabled:!self.rowDescriptor.disabled];
     self.textLabel.textColor  = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
     self.textField.textColor = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
-    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
@@ -154,7 +166,7 @@
 {
     if (_textLabel) return _textLabel;
     _textLabel = [UILabel autolayoutView];
-    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
     return _textLabel;
 }
 
@@ -167,14 +179,33 @@
     return _textField;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.contentView setNeedsLayout];
+    [self.contentView layoutIfNeeded];
+    
+    if ( self.textLabel.numberOfLines == 0 )
+    {
+        if ( self.textLabel.preferredMaxLayoutWidth != self.frame.size.width )
+        {
+            self.textLabel.preferredMaxLayoutWidth = self.frame.size.width;
+            [self setNeedsUpdateConstraints];
+        }
+    }
+}
+
 #pragma mark - LayoutConstraints
 
 -(NSArray *)layoutConstraints
 {
     NSMutableArray * result = [[NSMutableArray alloc] init];
     [self.textLabel setContentHuggingPriority:500 forAxis:UILayoutConstraintAxisHorizontal];
-    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_textLabel]-[_textField]" options:NSLayoutFormatAlignAllBaseline metrics:0 views:NSDictionaryOfVariableBindings(_textLabel, _textField)]];
-    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-12-[_textField]-12-|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:NSDictionaryOfVariableBindings(_textField)]];
+    
+    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_textLabel(<=200)]-[_textField]" options:NSLayoutFormatAlignAllBaseline metrics:0 views:NSDictionaryOfVariableBindings(_textLabel, _textField)]];
+    
+    NSArray *verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-8-[_textLabel]-8-|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:NSDictionaryOfVariableBindings(_textLabel)];
+    [result addObjectsFromArray:verticalConstraint];
+    
     return result;
 }
 
@@ -186,7 +217,7 @@
     NSDictionary * views = @{@"label": self.textLabel, @"textField": self.textField, @"image": self.imageView};
     if (self.imageView.image){
         if (self.textLabel.text.length > 0){
-            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[label]-[textField]-10-|" options:0 metrics:0 views:views];
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[label(<=200)]-[textField]-10-|" options:0 metrics:0 views:views];
         }
         else{
             self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[textField]-10-|" options:0 metrics:0 views:views];
@@ -194,7 +225,7 @@
     }
     else{
         if (self.textLabel.text.length > 0){
-            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[label]-[textField]-10-|" options:0 metrics:0 views:views];
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[label(<=200)]-[textField]-10-|" options:0 metrics:0 views:views];
         }
         else{
             self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[textField]-10-|" options:0 metrics:0 views:views];
@@ -204,6 +235,9 @@
     [super updateConstraints];
 }
 
++ (CGFloat)formDescriptorCellHeightForRowDescriptor:(XLFormRowDescriptor *)rowDescriptor {
+    return 200.0f;
+}
 
 #pragma mark - UITextFieldDelegate
 
