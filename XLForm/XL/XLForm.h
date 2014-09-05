@@ -49,6 +49,7 @@
 #import "XLFormBaseCell.h"
 #import "XLFormInlineSelectorCell.h"
 #import "XLFormTextFieldCell.h"
+#import "XLFormCurrencyCell.h"
 #import "XLFormTextViewCell.h"
 #import "XLFormSelectorCell.h"
 #import "XLFormDatePickerCell.h"
