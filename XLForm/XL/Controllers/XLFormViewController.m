@@ -406,8 +406,6 @@
 {
     XLFormRowDescriptor *rowDescriptor = [self.form formRowAtIndex:indexPath];
     Class cellClass = rowDescriptor.cellClass ?: [XLFormViewController cellClassesForRowDescriptorTypes][rowDescriptor.rowType];
-    NSLog(@"text: %@", rowDescriptor.title);
-    NSLog(@"class: %@", NSStringFromClass(cellClass) );
     
     if ([cellClass respondsToSelector:@selector(formDescriptorCellHeightForRowDescriptor:)]){
         
@@ -417,7 +415,6 @@
         
         [cell layoutSubviews];
         CGSize s = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        NSLog(@"fitting size: %@", NSStringFromCGSize(s));
         
         return s.height + 1;
         
