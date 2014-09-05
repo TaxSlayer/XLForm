@@ -92,7 +92,7 @@
     
     self.textLabel.text = [NSString stringWithFormat:@"%@%@", self.rowDescriptor.title, self.rowDescriptor.required ? @"*" : @""];
     self.detailTextLabel.text = [self valueDisplayText];
-    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
 }
