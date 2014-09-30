@@ -79,7 +79,7 @@
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     [self.contentView addSubview:self.textLabel];
     [self.contentView addSubview:self.textField];
-    [self.contentView addSubview:self.currencySymbolLabel];
+    //[self.contentView addSubview:self.currencySymbolLabel];
     [self.contentView addConstraints:[self layoutConstraints]];
     [self.textLabel addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:0];
     [self.imageView addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:0];
@@ -102,8 +102,8 @@
     self.textLabel.textColor  = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
     self.textField.textColor = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
     self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.currencySymbolLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    self.currencySymbolLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 }
 
 -(BOOL)formDescriptorCellBecomeFirstResponder
@@ -130,7 +130,7 @@
 {
     if (_textField) return _textField;
     _textField = [UITextField autolayoutView];
-    [_textField setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    [_textField setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
     [_textField setTextAlignment:NSTextAlignmentRight];
     return _textField;
 }
@@ -139,7 +139,7 @@
 {
     if (_currencySymbolLabel) return _currencySymbolLabel;
     _currencySymbolLabel = [UILabel autolayoutView];
-    [_currencySymbolLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    [_currencySymbolLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
     return _currencySymbolLabel;
 }
 
@@ -152,7 +152,8 @@
     {
         if ( self.textLabel.preferredMaxLayoutWidth != self.frame.size.width )
         {
-            self.textLabel.preferredMaxLayoutWidth = self.frame.size.width;
+            //keep max width
+            //self.textLabel.preferredMaxLayoutWidth = self.frame.size.width;
             [self setNeedsUpdateConstraints];
         }
     }
@@ -165,7 +166,7 @@
     NSMutableArray * result = [[NSMutableArray alloc] init];
     [self.textLabel setContentHuggingPriority:500 forAxis:UILayoutConstraintAxisHorizontal];
     
-    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_textLabel(<=200)]-[_currencySymbolLabel]-5-[_textField]" options:NSLayoutFormatAlignAllBaseline metrics:0 views:NSDictionaryOfVariableBindings(_textLabel, _currencySymbolLabel, _textField)]];
+    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_textLabel(<=175)]-5-[_textField]" options:NSLayoutFormatAlignAllBaseline metrics:0 views:NSDictionaryOfVariableBindings(_textLabel, _textField)]];
     
     NSArray *verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-8-[_textLabel]-8-|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:NSDictionaryOfVariableBindings(_textLabel)];
     [result addObjectsFromArray:verticalConstraint];
@@ -181,18 +182,18 @@
     NSDictionary * views = @{@"label": self.textLabel, @"textField": self.textField, @"image": self.imageView};
     if (self.imageView.image){
         if (self.textLabel.text.length > 0){
-            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[label(<=200)]-[_currencySymbolLabel]-5-[textField]-10-|" options:0 metrics:0 views:views];
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[label(<=175)]-5-[textField]-10-|" options:0 metrics:0 views:views];
         }
         else{
-            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[_currencySymbolLabel]-[textField]-10-|" options:0 metrics:0 views:views];
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[image]-[textField]-10-|" options:0 metrics:0 views:views];
         }
     }
     else{
         if (self.textLabel.text.length > 0){
-            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[label(<=200)]-[_currencySymbolLabel]-5-[textField]-10-|" options:0 metrics:0 views:views];
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[label(<=175)]-5-[textField]-10-|" options:0 metrics:0 views:views];
         }
         else{
-            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[_currencySymbolLabel]-5-[textField]-10-|" options:0 metrics:0 views:views];
+            self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[textField]-10-|" options:0 metrics:0 views:views];
         }
     }
     [self.contentView addConstraints:self.dynamicCustomConstraints];
@@ -201,6 +202,15 @@
 
 + (CGFloat)formDescriptorCellHeightForRowDescriptor:(XLFormRowDescriptor *)rowDescriptor {
     return 200.0f;
+}
+
+- (CGSize) intrinsicContentSize
+{
+    CGSize s = [super intrinsicContentSize];
+    NSLog(@"Intrinsic size: %f", s.height);
+    s.height += 1;
+    
+    return s;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -225,9 +235,9 @@
     return [self.formViewController textFieldShouldEndEditing:textField];
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    return [self.formViewController textField:textField shouldChangeCharactersInRange:range replacementString:string];
-}
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//    return [self.formViewController textField:textField shouldChangeCharactersInRange:range replacementString:string];
+//}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -257,4 +267,76 @@
     }
 }
 
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
+{
+    NSInteger MAX_DIGITS = 11; // $999,999,999.99
+    
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [numberFormatter setMaximumFractionDigits:2];
+    [numberFormatter setMinimumFractionDigits:2];
+    
+    NSString *stringMaybeChanged = [NSString stringWithString:string];
+    if (stringMaybeChanged.length > 1)
+    {
+        NSMutableString *stringPasted = [NSMutableString stringWithString:stringMaybeChanged];
+        
+        [stringPasted replaceOccurrencesOfString:numberFormatter.currencySymbol
+                                      withString:@""
+                                         options:NSLiteralSearch
+                                           range:NSMakeRange(0, [stringPasted length])];
+        
+        [stringPasted replaceOccurrencesOfString:numberFormatter.groupingSeparator
+                                      withString:@""
+                                         options:NSLiteralSearch
+                                           range:NSMakeRange(0, [stringPasted length])];
+        
+        NSDecimalNumber *numberPasted = [NSDecimalNumber decimalNumberWithString:stringPasted];
+        stringMaybeChanged = [numberFormatter stringFromNumber:numberPasted];
+    }
+    
+    UITextRange *selectedRange = [textField selectedTextRange];
+    UITextPosition *start = textField.beginningOfDocument;
+    NSInteger cursorOffset = [textField offsetFromPosition:start toPosition:selectedRange.start];
+    NSMutableString *textFieldTextStr = [NSMutableString stringWithString:textField.text];
+    NSUInteger textFieldTextStrLength = textFieldTextStr.length;
+    
+    [textFieldTextStr replaceCharactersInRange:range withString:stringMaybeChanged];
+    
+    [textFieldTextStr replaceOccurrencesOfString:numberFormatter.currencySymbol
+                                      withString:@""
+                                         options:NSLiteralSearch
+                                           range:NSMakeRange(0, [textFieldTextStr length])];
+    
+    [textFieldTextStr replaceOccurrencesOfString:numberFormatter.groupingSeparator
+                                      withString:@""
+                                         options:NSLiteralSearch
+                                           range:NSMakeRange(0, [textFieldTextStr length])];
+    
+    [textFieldTextStr replaceOccurrencesOfString:numberFormatter.decimalSeparator
+                                      withString:@""
+                                         options:NSLiteralSearch
+                                           range:NSMakeRange(0, [textFieldTextStr length])];
+    
+    if (textFieldTextStr.length <= MAX_DIGITS)
+    {
+        NSDecimalNumber *textFieldTextNum = [NSDecimalNumber decimalNumberWithString:textFieldTextStr];
+        NSDecimalNumber *divideByNum = [[[NSDecimalNumber alloc] initWithInt:10] decimalNumberByRaisingToPower:numberFormatter.maximumFractionDigits];
+        NSDecimalNumber *textFieldTextNewNum = [textFieldTextNum decimalNumberByDividingBy:divideByNum];
+        NSString *textFieldTextNewStr = [numberFormatter stringFromNumber:textFieldTextNewNum];
+        
+        textField.text = textFieldTextNewStr;
+        
+        if (cursorOffset != textFieldTextStrLength)
+        {
+            NSInteger lengthDelta = textFieldTextNewStr.length - textFieldTextStrLength;
+            NSInteger newCursorOffset = MAX(0, MIN(textFieldTextNewStr.length, cursorOffset + lengthDelta));
+            UITextPosition* newPosition = [textField positionFromPosition:textField.beginningOfDocument offset:newCursorOffset];
+            UITextRange* newRange = [textField textRangeFromPosition:newPosition toPosition:newPosition];
+            [textField setSelectedTextRange:newRange];
+        }
+    }
+    
+    return NO;
+}
 @end

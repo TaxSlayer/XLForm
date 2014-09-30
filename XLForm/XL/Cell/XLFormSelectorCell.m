@@ -25,11 +25,14 @@
 
 #import "XLForm.h"
 #import "NSObject+XLFormAdditions.h"
+#import "UIView+XLFormAdditions.h"
 #import "XLFormRowDescriptor.h"
 #import "XLFormSelectorCell.h"
 #import "NSArray+XLFormAdditions.h"
 
 @interface XLFormSelectorCell() <UIActionSheetDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIPopoverControllerDelegate>
+
+@property NSArray * dynamicCustomConstraints;
 
 @property (nonatomic) UIPickerView * pickerView;
 @property (nonatomic) UIPopoverController *popoverController;
@@ -38,7 +41,25 @@
 
 
 @implementation XLFormSelectorCell
+@synthesize detailTextLabel = _detailTextLabel;
+@synthesize textLabel = _textLabel;
 
+-(UILabel *)textLabel
+{
+    if (_textLabel) return _textLabel;
+    _textLabel = [UILabel autolayoutView];
+    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    return _textLabel;
+}
+
+-(UILabel *)detailTextLabel
+{
+    if (_detailTextLabel) return _detailTextLabel;
+    _detailTextLabel = [UILabel autolayoutView];
+    [_detailTextLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [_detailTextLabel setTextAlignment:NSTextAlignmentRight];
+    return _detailTextLabel;
+}
 
 -(NSString *)valueDisplayText
 {
@@ -123,6 +144,46 @@
 -(void)configure
 {
     [super configure];
+    
+    [self.contentView addSubview:self.textLabel];
+    [self.contentView addSubview:self.detailTextLabel];
+
+    [self.textLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    //[self.detailTextLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.contentView addConstraints:[self layoutConstraints]];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.contentView setNeedsLayout];
+    [self.contentView layoutIfNeeded];
+    
+    if ( self.textLabel.numberOfLines == 0 )
+    {
+        if ( self.textLabel.preferredMaxLayoutWidth != self.frame.size.width )
+        {
+            //keep max width
+            //self.textLabel.preferredMaxLayoutWidth = self.frame.size.width;
+            [self setNeedsUpdateConstraints];
+        }
+    }
+}
+
+-(NSArray *)layoutConstraints
+{
+    NSMutableArray * result = [[NSMutableArray alloc] init];
+    [self.textLabel setContentHuggingPriority:500 forAxis:UILayoutConstraintAxisHorizontal];
+    
+    NSDictionary * views = @{@"label": self.textLabel, @"detail": self.detailTextLabel};
+
+    [result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[label(<=175)]-5-[detail]-8-|" options:NSLayoutFormatAlignAllBaseline metrics:0 views:views]];
+    
+    NSArray *verticalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-8-[label]-8-|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views];
+
+    [result addObjectsFromArray:verticalConstraint];
+    
+    return result;
 }
 
 -(void)update
@@ -134,9 +195,35 @@
     self.selectionStyle = self.rowDescriptor.disabled || [self.rowDescriptor.rowType isEqualToString:XLFormRowDescriptorTypeInfo] ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleDefault;
     self.textLabel.text = [NSString stringWithFormat:@"%@%@", self.rowDescriptor.title, self.rowDescriptor.required ? @"*" : @""];
     self.detailTextLabel.text = [self valueDisplayText];
-    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//    [self.detailTextLabel setTextAlignment:NSTextAlignmentRight];
     
+}
+
+-(void)updateConstraints
+{
+//    if (self.dynamicCustomConstraints){
+//        [self.contentView removeConstraints:self.dynamicCustomConstraints];
+//    }
+
+//    NSDictionary * views = @{@"label": self.textLabel, @"detail": self.detailTextLabel};
+
+//    if (self.textLabel.text.length > 0){
+//        self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[label(<=175)]-5-[detail]" options:0 metrics:0 views:views];
+//    }
+//    else{
+//        self.dynamicCustomConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:-16-[detail]-10-" options:0 metrics:0 views:views];
+//    }
+//
+//    self.dynamicCustomConstraints = [self layoutConstraints];
+//    [self.contentView addConstraints:[self layoutConstraints]];
+
+    [super updateConstraints];
+}
+
++ (CGFloat)formDescriptorCellHeightForRowDescriptor:(XLFormRowDescriptor *)rowDescriptor {
+    return 200.0f;
 }
 
 -(void)formDescriptorCellDidSelectedWithFormController:(XLFormViewController *)controller

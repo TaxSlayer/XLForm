@@ -28,4 +28,7 @@
 
 @interface XLFormSelectorCell : XLFormBaseCell
 
+@property (nonatomic, readonly) UILabel * textLabel;
+@property (nonatomic, readonly) UILabel * detailTextLabel;
+
 @end

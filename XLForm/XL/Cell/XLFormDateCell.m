@@ -115,7 +115,7 @@
     self.textLabel.text = [NSString stringWithFormat:@"%@%@", self.rowDescriptor.title, self.rowDescriptor.required ? @"*" : @""];
     self.detailTextLabel.text = [self valueDisplayText];
     self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     
 }
 
@@ -254,7 +254,7 @@
 {
     if (_detailTextLabel) return _detailTextLabel;
     _detailTextLabel = [UILabel autolayoutView];
-    [_detailTextLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    [_detailTextLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
     [_detailTextLabel setTextAlignment:NSTextAlignmentRight];
     return _detailTextLabel;
 }
