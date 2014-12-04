@@ -146,8 +146,10 @@
     [self.textField setEnabled:!self.rowDescriptor.disabled];
     self.textLabel.textColor  = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
     self.textField.textColor = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
-    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+//    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    self.textLabel.font = [UIFont systemFontOfSize:13.0];
+//    self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.textField.font = [UIFont systemFontOfSize:13.0];
 }
 
 -(BOOL)formDescriptorCellBecomeFirstResponder
@@ -166,7 +168,7 @@
 {
     if (_textLabel) return _textLabel;
     _textLabel = [UILabel autolayoutView];
-    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [_textLabel setFont:[UIFont systemFontOfSize:13.0]];
     return _textLabel;
 }
 

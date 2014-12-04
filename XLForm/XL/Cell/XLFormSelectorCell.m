@@ -48,7 +48,7 @@
 {
     if (_textLabel) return _textLabel;
     _textLabel = [UILabel autolayoutView];
-    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [_textLabel setFont:[UIFont systemFontOfSize:13.0]];
     return _textLabel;
 }
 
@@ -56,7 +56,7 @@
 {
     if (_detailTextLabel) return _detailTextLabel;
     _detailTextLabel = [UILabel autolayoutView];
-    [_detailTextLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [_detailTextLabel setFont:[UIFont systemFontOfSize:13.0]];
     [_detailTextLabel setTextAlignment:NSTextAlignmentRight];
     return _detailTextLabel;
 }
@@ -195,8 +195,8 @@
     self.selectionStyle = self.rowDescriptor.disabled || [self.rowDescriptor.rowType isEqualToString:XLFormRowDescriptorTypeInfo] ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleDefault;
     self.textLabel.text = [NSString stringWithFormat:@"%@%@", self.rowDescriptor.title, self.rowDescriptor.required ? @"*" : @""];
     self.detailTextLabel.text = [self valueDisplayText];
-    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    self.textLabel.font = [UIFont systemFontOfSize:13.0];
+    self.detailTextLabel.font = [UIFont systemFontOfSize:13.0];
 //    [self.detailTextLabel setTextAlignment:NSTextAlignmentRight];
     
 }

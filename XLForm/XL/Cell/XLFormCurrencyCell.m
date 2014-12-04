@@ -101,9 +101,12 @@
     [self.textField setEnabled:!self.rowDescriptor.disabled];
     self.textLabel.textColor  = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
     self.textField.textColor = self.rowDescriptor.disabled ? [UIColor grayColor] : [UIColor blackColor];
-    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    self.currencySymbolLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//    self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//    self.textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//    self.currencySymbolLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    self.textLabel.font = [UIFont systemFontOfSize:13.0];
+    self.textField.font = [UIFont systemFontOfSize:13.0];
+    self.currencySymbolLabel.font = [UIFont systemFontOfSize:13.0];
 }
 
 -(BOOL)formDescriptorCellBecomeFirstResponder
@@ -122,7 +125,7 @@
 {
     if (_textLabel) return _textLabel;
     _textLabel = [UILabel autolayoutView];
-    [_textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [_textLabel setFont:[UIFont systemFontOfSize:13.0]];
     return _textLabel;
 }
 
@@ -130,7 +133,7 @@
 {
     if (_textField) return _textField;
     _textField = [UITextField autolayoutView];
-    [_textField setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [_textField setFont:[UIFont systemFontOfSize:13.0]];
     [_textField setTextAlignment:NSTextAlignmentRight];
     return _textField;
 }
@@ -139,7 +142,7 @@
 {
     if (_currencySymbolLabel) return _currencySymbolLabel;
     _currencySymbolLabel = [UILabel autolayoutView];
-    [_currencySymbolLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [_currencySymbolLabel setFont:[UIFont systemFontOfSize:13.0]];
     return _currencySymbolLabel;
 }
 
