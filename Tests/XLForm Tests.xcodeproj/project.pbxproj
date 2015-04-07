@@ -13,6 +13,8 @@
 		28657A481990879200CE8180 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28657A461990879200CE8180 /* InfoPlist.strings */; };
 		28657A5219914F9700CE8180 /* XLTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 28657A5119914F9700CE8180 /* XLTestCase.m */; };
 		28657A54199154EE00CE8180 /* XLFormValidatorsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28657A53199154EE00CE8180 /* XLFormValidatorsTests.m */; };
+		3C5B9B7A1AC0BA33000AF1BA /* XLFormExampleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C5B9B791AC0BA33000AF1BA /* XLFormExampleTest.m */; };
+		3C9817861AC30616003F6ABD /* UITextField+Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9817851AC30616003F6ABD /* UITextField+Test.m */; };
 		803CF19E12514D00A5080A99 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC7E8601D7342BFAF4C4060 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +29,11 @@
 		28657A5019914F9700CE8180 /* XLTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLTestCase.h; path = Test/XLTestCase.h; sourceTree = "<group>"; };
 		28657A5119914F9700CE8180 /* XLTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLTestCase.m; path = Test/XLTestCase.m; sourceTree = "<group>"; };
 		28657A53199154EE00CE8180 /* XLFormValidatorsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLFormValidatorsTests.m; path = Test/XLFormValidatorsTests.m; sourceTree = "<group>"; };
-		B5760BA9A8114A31A245A308 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		3C5B9B791AC0BA33000AF1BA /* XLFormExampleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLFormExampleTest.m; path = Test/XLFormExampleTest.m; sourceTree = "<group>"; };
+		3C9817841AC30616003F6ABD /* UITextField+Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITextField+Test.h"; path = "Helpers/UITextField+Test.h"; sourceTree = "<group>"; };
+		3C9817851AC30616003F6ABD /* UITextField+Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITextField+Test.m"; path = "Helpers/UITextField+Test.m"; sourceTree = "<group>"; };
+		8ADC094C94CA7ABBB8134573 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C6B20EA1A9D9591335BEE81F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CEC7E8601D7342BFAF4C4060 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -52,7 +58,7 @@
 				28657A431990879200CE8180 /* XLForm Tests */,
 				28657A3C1990879200CE8180 /* Frameworks */,
 				28657A3B1990879200CE8180 /* Products */,
-				B5760BA9A8114A31A245A308 /* Pods.xcconfig */,
+				52B313F2682BC45F8E9E8132 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,6 +84,7 @@
 		28657A431990879200CE8180 /* XLForm Tests */ = {
 			isa = PBXGroup;
 			children = (
+				3C9817831AC305DC003F6ABD /* Helpers */,
 				28657A4F19914F7000CE8180 /* Tests */,
 				28657A441990879200CE8180 /* Supporting Files */,
 			);
@@ -97,11 +104,30 @@
 		28657A4F19914F7000CE8180 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				3C5B9B791AC0BA33000AF1BA /* XLFormExampleTest.m */,
 				28657A5019914F9700CE8180 /* XLTestCase.h */,
 				28657A5119914F9700CE8180 /* XLTestCase.m */,
 				28657A53199154EE00CE8180 /* XLFormValidatorsTests.m */,
 			);
 			name = Tests;
+			sourceTree = "<group>";
+		};
+		3C9817831AC305DC003F6ABD /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				3C9817841AC30616003F6ABD /* UITextField+Test.h */,
+				3C9817851AC30616003F6ABD /* UITextField+Test.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		52B313F2682BC45F8E9E8132 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C6B20EA1A9D9591335BEE81F /* Pods.debug.xcconfig */,
+				8ADC094C94CA7ABBB8134573 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,7 +201,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6B058765CC1143829C6943B9 /* Check Pods Manifest.lock */ = {
@@ -202,6 +228,8 @@
 			files = (
 				28657A54199154EE00CE8180 /* XLFormValidatorsTests.m in Sources */,
 				28657A5219914F9700CE8180 /* XLTestCase.m in Sources */,
+				3C5B9B7A1AC0BA33000AF1BA /* XLFormExampleTest.m in Sources */,
+				3C9817861AC30616003F6ABD /* UITextField+Test.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,7 +261,7 @@
 		};
 		28657A4D1990879200CE8180 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5760BA9A8114A31A245A308 /* Pods.xcconfig */;
+			baseConfigurationReference = C6B20EA1A9D9591335BEE81F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -281,7 +309,7 @@
 		};
 		28657A4E1990879200CE8180 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5760BA9A8114A31A245A308 /* Pods.xcconfig */;
+			baseConfigurationReference = 8ADC094C94CA7ABBB8134573 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

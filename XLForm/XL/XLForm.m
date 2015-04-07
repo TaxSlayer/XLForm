@@ -2,7 +2,7 @@
 //  XLForm.m
 //  XLForm ( https://github.com/xmartlabs/XLForm )
 //
-//  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
+//  Copyright (c) 2015 Xmartlabs ( http://xmartlabs.com )
 //
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -62,6 +62,5 @@ NSString *const XLFormRowDescriptorTypeBooleanCheck = @"booleanCheck";
 NSString *const XLFormRowDescriptorTypeBooleanSwitch = @"booleanSwitch";
 NSString *const XLFormRowDescriptorTypeButton = @"button";
 NSString *const XLFormRowDescriptorTypeInfo = @"info";
-NSString *const XLFormRowDescriptorTypeImage = @"image";
 NSString *const XLFormRowDescriptorTypeStepCounter = @"stepCounter";
 
